@@ -75,10 +75,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <input type="password" id="password_confirm" name="password_confirm" required>
 
     <label for="role">Role:</label>
-    <select id="role" name="role">
-        <option value="user">User</option>
-        <option value="admin">Admin</option>
-    </select>
 
     <button type="submit">Register</button>
 </form>

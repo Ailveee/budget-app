@@ -40,4 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <button type="submit">Add</button>
 </form>
 
+<a href="index.php">Back to Department</a>
+
 <?php include '../../includes/footer.php'; ?>

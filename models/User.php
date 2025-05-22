@@ -8,11 +8,12 @@ class User {
         $this->db = Database::getInstance();
     }
 
-    public function create($name, $email, $password, $departmentId = null, $role = 0) {
-        $hash = password_hash($password, PASSWORD_BCRYPT);
-        $stmt = $this->db->prepare("INSERT INTO users (name, email, password, department_id, role) VALUES (?, ?, ?, ?, ?)");
-        return $stmt->execute([$name, $email, $hash, $departmentId, $role]);
-    }
+    public function create($full_name, $email, $password, $role, $department_id) {
+    $stmt = $this->db->prepare("INSERT INTO users (name, email, password, role, department_id) VALUES (?, ?, ?, ?, ?)");
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    $roleInt = $role === 'admin' ? 1 : 0;
+    return $stmt->execute([$full_name, $email, $hashedPassword, $roleInt, $department_id]);
+}
 
     public function getAll() {
         return $this->db->query("SELECT * FROM users")->fetchAll();

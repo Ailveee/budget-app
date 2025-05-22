@@ -4,7 +4,7 @@ $deposits = (new Deposit())->getAll();
 include '../../includes/header.php';
 ?>
 <h1>Deposits</h1>
-<a href="create.php">+ Add Deposit</a>
+<button class="add-button" onclick="window.location.href='create.php'">+ Add Deposit</button>
 <table>
   <tr><th>Amount</th><th>Date</th><th>Department</th><th>Actions</th></tr>
   <?php foreach ($deposits as $deposit): ?>

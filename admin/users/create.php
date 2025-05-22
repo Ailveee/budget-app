@@ -13,6 +13,9 @@ $error = '';
 $full_name = '';
 $email = '';
 $role = 'user';
+$department_id = '';
+
+$departments = $userModel->getAllDepartments(); // You must have this function in your model
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $full_name = trim($_POST['full_name'] ?? '');
@@ -20,8 +23,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $password = $_POST['password'] ?? '';
     $password_confirm = $_POST['password_confirm'] ?? '';
     $role = $_POST['role'] ?? 'user';
+    $department_id = $_POST['department_id'] ?? '';
 
-    if (!$full_name || !$email || !$password || !$password_confirm) {
+    if (!$full_name || !$email || !$password || !$password_confirm || !$department_id) {
         $error = 'All fields are required.';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = 'Invalid email format.';
@@ -29,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Passwords do not match.';
     } elseif (strlen($password) < 8) {
         $error = 'Password must be at least 8 characters.';
-    } elseif (!$userModel->create($full_name, $email, $password, $role)) {
+    } elseif (!$userModel->create($full_name, $email, $password, $role, $department_id)) {
         $error = 'Email already in use.';
     } else {
         header('Location: index.php');
@@ -69,6 +73,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <option value="admin" <?= $role === 'admin' ? 'selected' : '' ?>>Admin</option>
         </select>
     </label><br><br>
+
+    <label>Department:</label>
+    <select name="department_id" required>
+        <option value="">-- Select Department --</option>
+        <?php foreach ($departments as $dept): ?>
+            <option value="<?= $dept['id'] ?>" <?= $department_id == $dept['id'] ? 'selected' : '' ?>>
+                <?= htmlspecialchars($dept['name']) ?>
+            </option>
+        <?php endforeach; ?>
+    </select><br><br>
 
     <button type="submit">Create User</button>
 </form>
